@@ -1,34 +1,28 @@
-function getItems() {
-    return fetch("http://localhost:3000/api/products")
-        .then(function (res) {
-            return res.json()
-        })
-        .then(function (items) {
-            return items
-        })
-        .catch(function (err) {
-            alert(err)
-        })
+async function getItems() {
+    try {
+        const res = await fetch("http://localhost:3000/api/products");
+        const items = await res.json();
+        return items;
+    }
+    catch (err) {
+        alert(err);
+    };
 }
 
-function showItem() {
-    document
-        .getElementById("items")
-        .innerHTML += `
+function showItem(item) {
+    document.querySelector("#items").innerHTML += `
         <a href="./product.html?id=${item._id}">
             <article>
                 <img src="${item.imageUrl}" alt="${item.altTxt}">
                 <h3 class="productName">${item.name}</h3>
                 <p class="productDescription">${item.description}</p>
             </article>
-        </a>`
+        </a>`;
 }
 
-async function renderProducts() {
+(async function renderProducts() {
     let items = await getItems()
-    for (item of items) {
+    items.forEach(item => {
         showItem(item)
-    }
-}
-
-renderProducts()
+    });;
+})()

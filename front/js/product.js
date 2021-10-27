@@ -1,34 +1,53 @@
 function productCheck() {
-    let url = new URL(window.location)
-    let id = url.searchParams.get("id")
-    return id
+    let url = new URL(window.location.href);
+    let id = url.searchParams.get("id");
+    return id;
 }
 
 async function productInfos() {
-    let productId = productCheck()
-    let res = await fetch(`http://localhost:3000/api/products/${productId}`)
-    return res.json()
+    let productId = productCheck();
+    try {
+        const res = await fetch(`http://localhost:3000/api/products/${productId}`);
+        const item = await res.json();
+        return item;
+    }
+    catch (err) {
+        alert(err);
+    };
 }
 
-async function fillProduct() {
-    let item = await productInfos()
-    document
-        .querySelector(".item__img")
-        .innerHTML += `<img src="${item.imageUrl}" alt="${item.altTxt}">`
-    document
-        .getElementById("title")
-        .innerHTML += item.name
-    document
-        .getElementById("price")
-        .innerHTML += item.price
-    document
-        .getElementById("description")
-        .innerHTML += item.description
+(async function fillProduct() {
+    let item = await productInfos();
+    document.querySelector(".item__img").innerHTML = `<img src="${item.imageUrl}" alt="${item.altTxt}">`;
+    document.querySelector("#title").innerHTML = item.name;
+    document.querySelector("#price").innerHTML = item.price;
+    document.querySelector("#description").innerHTML = item.description;
     item.colors.forEach(color => {
-        document
-            .getElementById("colors")
-            .innerHTML += `<option value="${color}">${color}</option>`
-    })
-}
+        document.querySelector("#colors").innerHTML += `<option value="${color}">${color}</option>`
+    });
+})()
 
-fillProduct()
+let sendButton = document.querySelector("#addToCart");
+
+sendButton.addEventListener("click", () => {
+    let productId = productCheck();
+    let productColor = document.querySelector("#colors").value;
+    let productQuantity = document.querySelector("#quantity").value;
+    let productDetails = {
+        id: productId,
+        color: productColor,
+        quantity: productQuantity
+    };
+    let storageStatus = JSON.parse(localStorage.getItem("product"));
+    let addToStorage = () => {
+        storageStatus.push(productDetails);
+        localStorage.setItem("product", JSON.stringify(storageStatus));
+    };
+    if (storageStatus) {
+        addToStorage();
+    }
+    else {
+        storageStatus = [];
+        addToStorage();
+    };
+});
