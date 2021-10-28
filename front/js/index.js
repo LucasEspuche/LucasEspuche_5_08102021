@@ -21,8 +21,8 @@ function showItem(item) {
 }
 
 (async function renderProducts() {
-    let items = await getItems()
+    let items = await getItems();
     items.forEach(item => {
         showItem(item)
-    });;
+    });
 })()
