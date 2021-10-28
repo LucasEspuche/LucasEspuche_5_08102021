@@ -44,6 +44,13 @@ sendButton.addEventListener("click", () => {
         localStorage.setItem("product", JSON.stringify(storageStatus));
     };
     if (storageStatus) {
+        storageStatus.forEach(product => {
+            if (productDetails.id == product.id &&
+                productDetails.color == product.color) {
+                productDetails.quantity = parseInt(productDetails.quantity) + parseInt(product.quantity);
+                storageStatus.splice(product, 1);
+            }
+        });
         addToStorage();
     }
     else {
@@ -51,3 +58,4 @@ sendButton.addEventListener("click", () => {
         addToStorage();
     };
 });
+
