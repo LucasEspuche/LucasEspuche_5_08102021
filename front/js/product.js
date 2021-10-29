@@ -51,15 +51,16 @@ async function productInfos() {
             else {
                 storageStatus.push(productDetails);
                 localStorage.setItem("product", JSON.stringify(storageStatus));
+                alert("Votre sélection à été ajoutée au panier");
             }
         };
         if (storageStatus) {
-            storageStatus.forEach(product => {
+            storageStatus.forEach((product, index) => {
                 if (productDetails.id === product.id &&
                     productDetails.color === product.color) {
                     productDetails.quantity = parseInt(productDetails.quantity)
                         + parseInt(product.quantity);
-                    storageStatus.splice(product, 1);
+                    storageStatus.splice(index, 1);
                 }
             });
             storagePush();
