@@ -45,8 +45,8 @@ async function productInfos() {
             if (productColor === "") {
                 alert("Veuillez sélectionner une couleur");
             }
-            else if (productQuantity == 0) {
-                alert("Veuillez sélectionner une quantité");
+            else if (productQuantity < 1 || productQuantity > 100) {
+                alert("Veuillez choisir entre 1 et 100 articles");
             }
             else {
                 storageStatus.push(productDetails);
