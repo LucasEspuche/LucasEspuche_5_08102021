@@ -1,6 +1,7 @@
+// Récupération de l'ID de la commande depuis l'URL et confirmation à l'utilisateur.
 (function orderConfirmation() {
-    let url = new URL(window.location.href);
-    let orderId = url.searchParams.get("id");
+    const url = new URL(window.location.href);
+    const orderId = url.searchParams.get("id");
     document.querySelector("#orderId").innerHTML = `
         ${orderId}<br>
         Merci pour vos achats!`;

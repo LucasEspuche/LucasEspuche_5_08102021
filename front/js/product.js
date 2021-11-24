@@ -1,23 +1,26 @@
+// Récupération de l'ID du produit depuis l'URL de la page.
 function productCheck() {
-    let url = new URL(window.location.href);
-    let id = url.searchParams.get("id");
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("id");
     return id;
 }
 
+// Récupération des informations du produit grâce à son ID, depuis l'API.
 async function productInfos() {
-    let productId = productCheck();
+    const productId = productCheck();
     try {
         const res = await fetch(`http://localhost:3000/api/products/${productId}`);
         const item = await res.json();
         return item;
     }
-    catch (err) {
-        alert(err);
+    catch (error) {
+        console.log("Erreur: " + error);
     };
 }
 
+// Modification du DOM pour faire apparaitre les détails du produit.
 (async function fillProduct() {
-    let item = await productInfos();
+    const item = await productInfos();
     document.querySelector(".item__img").innerHTML =
         `<img src="${item.imageUrl}" alt="${item.altTxt}">`;
     document.querySelector("#title").innerHTML = item.name;
@@ -29,12 +32,13 @@ async function productInfos() {
     });
 })();
 
+// Envoi de la sélection de l'utilisateur, dans le localStorage.
 (function productStorage() {
-    let sendButton = document.querySelector("#addToCart");
+    const sendButton = document.querySelector("#addToCart");
     sendButton.addEventListener("click", () => {
-        let productId = productCheck();
-        let productColor = document.querySelector("#colors").value;
-        let productQuantity = document.querySelector("#quantity").value;
+        const productId = productCheck();
+        const productColor = document.querySelector("#colors").value;
+        const productQuantity = document.querySelector("#quantity").value;
         let productDetails = {
             id: productId,
             color: productColor,
